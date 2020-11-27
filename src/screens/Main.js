@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import MainComponent from '../components/MainComponent'
 import {
     Typography,
-    Grid
+    Grid,
+    TextField
 } from '@material-ui/core'
  
 import {withStyles } from '@material-ui/core/styles';
@@ -14,6 +15,7 @@ import {
     fetchDetails,
     fetchImages
 } from '../actions/fetchData'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const craftApi = "https://s3-ap-southeast-1.amazonaws.com/he-public-data/beercraft5bac38c.json";
 
@@ -38,6 +40,7 @@ class Main extends Component {
     }
 
     searchItem(data){
+        console.log("Input : " , data)
         const jsonData = this.state.data;
         for(var i=0;i<this.state.data.length;i++){
             if(jsonData[i]['name'] == data){
@@ -60,10 +63,14 @@ class Main extends Component {
                                 color="secondary" 
                                 onChange={(event,number)=>this.setState({start:0+(number-1)*21})}
                                 /> 
-                    <SearchBar
-                            value={this.state.value}
-                            onChange={(newValue) => this.setState({ value: newValue })}
-                            onRequestSearch={() => this.searchItem(this.state.value)}
+                    
+                    <Autocomplete
+                        id="combo-box-demo"
+                        options={this.state.data}
+                        getOptionLabel={(option) => option.name}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label="Search" variant="outlined" />}
+                        onChange={(object, value, reason)=>console.log("OIbj" , value)}
                         />
                 </div>
                
